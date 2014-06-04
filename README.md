@@ -1,4 +1,6 @@
-# Capistrano::Wpcli
+# Capistrano::WPCLI
+
+**Note: this plugin works only with Capistrano 3.**
 
 Simple Capistrano wrapper using WP-CLI
 
@@ -18,7 +20,20 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+All you need to do is put the following in `Capfile` file:
+
+    require 'capistrano/wpcli'
+
+### How it works
+
+The following tasks are added to Capistrano:
+
+* `wpcli:run`<br/>
+Executes the WP-CLI command passed as parameter.
+* `wpcli:db:push`<br/>
+Pushes the local WP database to the remote server and replaces the urls.
+* `wpcli:db:pull`<br/>
+Pulls the remote server WP database to local and replaces the urls.
 
 ## Contributing
 
