@@ -37,7 +37,7 @@ Pulls the remote server WP database to local and replaces the urls.
 
 ## Contributing
 
-1. Fork it ( https://github.com/[my-github-username]/capistrano-wpcli/fork )
+1. Fork it ( https://github.com/lavmeiker/capistrano-wpcli/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
