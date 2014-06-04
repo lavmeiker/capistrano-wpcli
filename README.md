@@ -37,7 +37,7 @@ Pulls the remote server WP database to local and replaces the urls.
 
 ### Configuration
 
-This plugin needs some configuration to work properly. It will try to load these configuration from the env vars. To do so all you need to do is put the following in `.env` file:
+This plugin needs some configuration to work properly. It will try to load these configurations from the env vars. To do so all you need to do is put the following in `.env` file:
 
 	WP_APP_NAME=example
 	WP_HOME=http://example.dev
@@ -55,6 +55,12 @@ Url of the Wordpress root installation on the remote server (used by search-repl
 
 * `set :local_url`<br/>
 Url of the Wordpress root installation on the local server (used by search-replace command).
+
+* `set :remote_tmp_dir`<br/>
+A temp dir on the remote server which is read and writeable by the capistrano deploy user. Defaults to `/tmp`.
+
+* `set :local_tmp_dir`<br/>
+A local temp dir which is read and writeable. Defaults to `/tmp`.
 
 ## Contributing
 
