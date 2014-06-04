@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Juancito Arias"]
   spec.email         = ["trasgofurioso@gmail.com"]
   spec.summary       = %q{Simple Capistrano wrapper around WP-CLI}
-  spec.description   = %q{Simple Capistrano wrapper around WP-CLI}
-  spec.homepage      = ""
+  spec.description   = %q{Capistrano tasks for managing Wordpress}
+  spec.homepage      = "https://github.com/lavmeiker/capistrano-wpcli"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
