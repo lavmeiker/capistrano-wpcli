@@ -35,6 +35,27 @@ Pushes the local WP database to the remote server and replaces the urls.
 * `wpcli:db:pull`<br/>
 Pulls the remote server WP database to local and replaces the urls.
 
+### Configuration
+
+This plugin needs some configuration to work properly. It will try to load these configuration from the env vars. To do so all you need to do is put the following in `.env` file:
+
+	WP_APP_NAME=example
+	WP_HOME=http://example.dev
+	WP_REMOTE_URL=http://example.com
+
+Alternatively, you can put all your configs in capistrano stage files i.e. `config/deploy/production.rb`.
+
+Here's the list of options and the defaults for each option:
+
+* `set :application`<br/>
+Name of the application.
+
+* `set :remote_url`<br/>
+Url of the Wordpress root installation on the remote server (used by search-replace command).
+
+* `set :local_url`<br/>
+Url of the Wordpress root installation on the local server (used by search-replace command).
+
 ## Contributing
 
 1. Fork it ( https://github.com/lavmeiker/capistrano-wpcli/fork )
