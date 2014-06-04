@@ -1,24 +1,16 @@
 namespace :load do
   task :defaults do
-    set :application,  ENV["WP_APP_NAME"]
-    # A temp dir which is read and writeable by the capistrano
-    # deploy user
-    set :remote_tmp_dir, ENV["WP_REMOTE_TMP"] || "/tmp"
-
-    # A local temp dir which is read and writeable
-    set :local_tmp_dir, ENV["WP_LOCAL_TMP"] || "/tmp"
-
     # The url under which the wordpress installation is
     # available on the remote server
-    set :remote_url, ENV["WP_REMOTE_URL"]
+    set :wpcli_remote_url, "http://example.com"
 
     # The url under which the wordpress installation is
     # available on the local server
-    set :local_url, ENV["WP_HOME"]
+    set :wpcli_local_url, "http://example.dev"
     
-    # Shortcuts
-    set :remote_db_file, "#{fetch(:remote_tmp_dir)}/#{fetch(:application)}_database.sql"
-    set :local_db_file, "#{fetch(:local_tmp_dir)}/#{fetch(:application)}_database.sql"
+    # Temporal db dumps path
+    set :wpcli_remote_db_file, "#{fetch(:tmp_dir)}/wpcli_database.sql"
+    set :wpcli_local_db_file, "/tmp/wpcli_database.sql"
   end
 end
 
@@ -29,16 +21,16 @@ namespace :wpcli do
       on roles(:web) do
         within release_path do
           with path: "#{fetch(:path)}:$PATH" do
-            execute :wp, "db export",  fetch(:remote_db_file)
-            download! fetch(:remote_db_file), fetch(:local_db_file)
-            execute :rm, fetch(:remote_db_file)
+            execute :wp, "db export",  fetch(:wpcli_remote_db_file)
+            download! fetch(:wpcli_remote_db_file), fetch(:wpcli_local_db_file)
+            execute :rm, fetch(:wpcli_remote_db_file)
           end
         end
 
         run_locally do
-          execute :wp, "db import", fetch(:local_db_file)
-          execute :rm, "#{fetch(:local_db_file)}"
-          execute :wp, "search-replace", "'#{fetch(:remote_url)}' '#{fetch(:local_url)}' --skip-columns=guid"
+          execute :wp, "db import", fetch(:wpcli_local_db_file)
+          execute :rm, "#{fetch(:wpcli_local_db_file)}"
+          execute :wp, "search-replace", "'#{fetch(:wpcli_remote_url)}' '#{fetch(:wpcli_local_url)}' --skip-columns=guid"
         end
       end
     end
@@ -47,20 +39,20 @@ namespace :wpcli do
     task :push do
       on roles(:web) do
         run_locally do
-          execute :wp, "db export", fetch(:local_db_file)
+          execute :wp, "db export", fetch(:wpcli_local_db_file)
         end
 
-        upload! fetch(:local_db_file), fetch(:remote_db_file)
+        upload! fetch(:wpcli_local_db_file), fetch(:wpcli_remote_db_file)
 
         run_locally do
-          execute :rm, fetch(:local_db_file)
+          execute :rm, fetch(:wpcli_local_db_file)
         end
 
         within release_path do
           with path: "#{fetch(:path)}:$PATH" do
-            execute :wp, "db import", fetch(:remote_db_file)
-            execute :rm, fetch(:remote_db_file)
-            execute :wp, "search-replace", "'#{fetch(:local_url)}' '#{fetch(:remote_url)}' --skip-columns=guid"
+            execute :wp, "db import", fetch(:wpcli_remote_db_file)
+            execute :rm, fetch(:wpcli_remote_db_file)
+            execute :wp, "search-replace", "'#{fetch(:wpcli_local_url)}' '#{fetch(:wpcli_remote_url)}' --skip-columns=guid"
           end
         end
       end
