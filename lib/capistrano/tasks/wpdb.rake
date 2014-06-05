@@ -7,10 +7,13 @@ namespace :load do
     # The url under which the wordpress installation is
     # available on the local server
     set :wpcli_local_url, "http://example.dev"
+
+    # A local temp dir which is read and writeable
+    set :local_tmp_dir, "/tmp"
     
     # Temporal db dumps path
     set :wpcli_remote_db_file, "#{fetch(:tmp_dir)}/wpcli_database.sql"
-    set :wpcli_local_db_file, "/tmp/wpcli_database.sql"
+    set :wpcli_local_db_file, "#{fetch(:local_tmp_dir)}/wpcli_database.sql"
   end
 end
 
