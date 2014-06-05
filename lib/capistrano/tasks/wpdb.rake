@@ -20,11 +20,9 @@ namespace :wpcli do
     task :pull do
       on roles(:web) do
         within release_path do
-          with path: "#{fetch(:path)}:$PATH" do
-            execute :wp, "db export",  fetch(:wpcli_remote_db_file)
-            download! fetch(:wpcli_remote_db_file), fetch(:wpcli_local_db_file)
-            execute :rm, fetch(:wpcli_remote_db_file)
-          end
+          execute :wp, "db export",  fetch(:wpcli_remote_db_file)
+          download! fetch(:wpcli_remote_db_file), fetch(:wpcli_local_db_file)
+          execute :rm, fetch(:wpcli_remote_db_file)
         end
 
         run_locally do
@@ -49,11 +47,9 @@ namespace :wpcli do
         end
 
         within release_path do
-          with path: "#{fetch(:path)}:$PATH" do
-            execute :wp, "db import", fetch(:wpcli_remote_db_file)
-            execute :rm, fetch(:wpcli_remote_db_file)
-            execute :wp, "search-replace", "'#{fetch(:wpcli_local_url)}' '#{fetch(:wpcli_remote_url)}' --skip-columns=guid"
-          end
+          execute :wp, "db import", fetch(:wpcli_remote_db_file)
+          execute :rm, fetch(:wpcli_remote_db_file)
+          execute :wp, "search-replace", "'#{fetch(:wpcli_local_url)}' '#{fetch(:wpcli_remote_url)}' --skip-columns=guid"
         end
       end
     end
