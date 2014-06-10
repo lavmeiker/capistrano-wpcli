@@ -31,7 +31,7 @@ namespace :wpcli do
         run_locally do
           execute :wp, "db import", fetch(:wpcli_local_db_file)
           execute :rm, "#{fetch(:wpcli_local_db_file)}"
-          execute :wp, "search-replace", fetch(:wpcli_remote_url), fetch(:wpcli_local_url), "--skip-columns=guid", fetch(:wpcli_args)
+          execute :wp, "search-replace", fetch(:wpcli_remote_url), fetch(:wpcli_local_url), fetch(:wpcli_args) || "--skip-columns=guid"
         end
       end
     end
@@ -52,7 +52,7 @@ namespace :wpcli do
         within release_path do
           execute :wp, "db import", fetch(:wpcli_remote_db_file)
           execute :rm, fetch(:wpcli_remote_db_file)
-          execute :wp, "search-replace", fetch(:wpcli_local_url), fetch(:wpcli_remote_url), "--skip-columns=guid", fetch(:wpcli_args)
+          execute :wp, "search-replace", fetch(:wpcli_local_url), fetch(:wpcli_remote_url), fetch(:wpcli_args) || "--skip-columns=guid"
         end
       end
     end
