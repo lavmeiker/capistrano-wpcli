@@ -55,7 +55,7 @@ Url of the Wordpress root installation on the local server (used by search-repla
 A local temp dir which is read and writeable. Defaults to `/tmp`.
 
 * `set :wpcli_args`<br/>
-You can pass arguments directly to WPCLI using this var. For example `--network` for a Wordpress Multisite installation.
+You can pass arguments directly to WPCLI using this var. By default it will try to load values from `ENV['WPCLI_ARGS']`. 
 
 ## Contributing
 

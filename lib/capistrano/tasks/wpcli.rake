@@ -2,9 +2,9 @@ namespace :load do
   task :defaults do
     set :wp_roles, :all
 
-    # You can pass global arguments directly to WPCLI using
-    # this var
-    set :wpcli_args, ''
+    # You can pass parameters to WPCLI setting
+    # env var WPCLI_ARGS on each run
+    set :wpcli_args, ENV['WPCLI_ARGS']
   end
 end
 
@@ -14,7 +14,7 @@ namespace :wpcli do
     args.with_defaults(:command => :help)
     on release_roles(fetch(:wp_roles)) do
       within release_path do
-        execute :wp, args[:command], *args.extras, fetch(:wpcli_args)
+        execute :wp, args[:command], fetch(:wpcli_args)
       end
     end
   end
