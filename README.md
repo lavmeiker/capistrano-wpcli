@@ -50,6 +50,9 @@ Url of the Wordpress root installation on the local server (used by search-repla
 * `set :local_tmp_dir`<br/>
 A local temp dir which is read and writeable. Defaults to `/tmp`.
 
+* `set :wpcli_args`<br/>
+You can pass arguments directly to WPCLI using this var. For example `--network` for a Wordpress Multisite installation.
+
 ## Contributing
 
 1. Fork it ( https://github.com/lavmeiker/capistrano-wpcli/fork )
