@@ -23,14 +23,14 @@ namespace :wpcli do
     task :pull do
       on roles(:web) do
         within release_path do
-          execute :wp, "db export",  fetch(:wpcli_remote_db_file)
+          execute :wp, :db, :export, fetch(:wpcli_remote_db_file)
           download! fetch(:wpcli_remote_db_file), fetch(:wpcli_local_db_file)
           execute :rm, fetch(:wpcli_remote_db_file)
         end
 
         run_locally do
-          execute :wp, "db import", fetch(:wpcli_local_db_file)
-          execute :rm, "#{fetch(:wpcli_local_db_file)}"
+          execute :wp, :db, :import, fetch(:wpcli_local_db_file)
+          execute :rm, fetch(:wpcli_local_db_file)
           execute :wp, "search-replace", fetch(:wpcli_remote_url), fetch(:wpcli_local_url), fetch(:wpcli_args) || "--skip-columns=guid"
         end
       end
@@ -40,7 +40,7 @@ namespace :wpcli do
     task :push do
       on roles(:web) do
         run_locally do
-          execute :wp, "db export", fetch(:wpcli_local_db_file)
+          execute :wp, :db, :export, fetch(:wpcli_local_db_file)
         end
 
         upload! fetch(:wpcli_local_db_file), fetch(:wpcli_remote_db_file)
@@ -50,7 +50,7 @@ namespace :wpcli do
         end
 
         within release_path do
-          execute :wp, "db import", fetch(:wpcli_remote_db_file)
+          execute :wp, :db, :import, fetch(:wpcli_remote_db_file)
           execute :rm, fetch(:wpcli_remote_db_file)
           execute :wp, "search-replace", fetch(:wpcli_local_url), fetch(:wpcli_remote_url), fetch(:wpcli_args) || "--skip-columns=guid"
         end
