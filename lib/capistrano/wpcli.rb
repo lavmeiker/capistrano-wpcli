@@ -1,3 +1,5 @@
-load File.expand_path("../tasks/wpcli.rake", __FILE__)
-load File.expand_path("../tasks/wpdb.rake", __FILE__)
-load File.expand_path("../tasks/wprewrite.rake", __FILE__)
+# Load all tasks
+files = Dir[File.join(File.dirname(__FILE__), 'tasks', '*.rake')] 
+files.each do |file| 
+  load file
+end
