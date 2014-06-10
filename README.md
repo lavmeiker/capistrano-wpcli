@@ -34,6 +34,10 @@ Executes the WP-CLI command passed as parameter.
 Pushes the local WP database to the remote server and replaces the urls.
 * `wpcli:db:pull`<br/>
 Pulls the remote server WP database to local and replaces the urls.
+* `wpcli:rewrite:flush`<br/>
+Flush rewrite rules.
+* `wpcli:rewrite:hard_flush`<br/>
+Perform a hard flush - update `.htaccess` rules as well as rewrite rules in database.
 
 ### Configuration
 
