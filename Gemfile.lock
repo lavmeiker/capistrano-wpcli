@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    capistrano-wpcli (0.0.3)
+    capistrano-wpcli (0.0.4)
       capistrano (>= 3.0)
 
 GEM
