@@ -10,10 +10,6 @@ namespace :load do
 
     # A local temp dir which is read and writeable
     set :local_tmp_dir, "/tmp"
-
-    # You can pass arguments directly to WPCLI using
-    # this var
-    set :wpcli_args, "--skip-columns=guid"
     
     # Temporal db dumps path
     set :wpcli_remote_db_file, "#{fetch(:tmp_dir)}/wpcli_database.sql"
@@ -35,7 +31,7 @@ namespace :wpcli do
         run_locally do
           execute :wp, "db import", fetch(:wpcli_local_db_file)
           execute :rm, "#{fetch(:wpcli_local_db_file)}"
-          execute :wp, "search-replace", fetch(:wpcli_remote_url), fetch(:wpcli_local_url), fetch(:wpcli_args)
+          execute :wp, "search-replace", fetch(:wpcli_remote_url), fetch(:wpcli_local_url), "--skip-columns=guid", fetch(:wpcli_args)
         end
       end
     end
@@ -56,7 +52,7 @@ namespace :wpcli do
         within release_path do
           execute :wp, "db import", fetch(:wpcli_remote_db_file)
           execute :rm, fetch(:wpcli_remote_db_file)
-          execute :wp, "search-replace", fetch(:wpcli_local_url), fetch(:wpcli_remote_url), fetch(:wpcli_args)
+          execute :wp, "search-replace", fetch(:wpcli_local_url), fetch(:wpcli_remote_url), "--skip-columns=guid", fetch(:wpcli_args)
         end
       end
     end
