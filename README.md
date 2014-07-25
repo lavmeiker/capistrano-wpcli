@@ -2,7 +2,7 @@
 
 **Note: this plugin works only with Capistrano 3.**
 
-Simple Capistrano wrapper using WP-CLI
+Provides command line tools to facilitate Wordpress deploy.
 
 ## Installation
 
@@ -38,10 +38,14 @@ Pulls the remote server WP database to local and replaces the urls.
 Flush rewrite rules.
 * `wpcli:rewrite:hard_flush`<br/>
 Perform a hard flush - update `.htaccess` rules as well as rewrite rules in database.
+* `wpcli:uploads:rsync:push`<br/>
+Push local uploads delta to remote machine using rsync.
+* `wpcli:uploads:rsync:pull`<br/>
+Pull remote uploads delta to local machine using rsync.
 
 ### Configuration
 
-This plugin needs some configuration to work properly. You can put all your configs in capistrano stage files i.e. `config/deploy/production.rb`.
+This plugin needs some configuration to work properly. You can put all your configs in Capistrano stage files i.e. `config/deploy/production.rb`.
 
 Here's the list of options and the defaults for each option:
 
@@ -55,7 +59,13 @@ Url of the Wordpress root installation on the local server (used by search-repla
 A local temp dir which is read and writeable. Defaults to `/tmp`.
 
 * `set :wpcli_args`<br/>
-You can pass arguments directly to WPCLI using this var. By default it will try to load values from `ENV['WPCLI_ARGS']`. 
+You can pass arguments directly to WPCLI using this var. By default it will try to load values from `ENV['WPCLI_ARGS']`.
+
+* `set :wpcli_local_uploads_dir`<br/>
+Local dir where WP stores the uploads. IMPORTANT: Add trailing slash!
+
+* `set :wpcli_remote_uploads_dir`<br/>
+Remote dir where WP stores the uploads. IMPORTANT: Add trailing slash!
 
 ## Contributing
 
