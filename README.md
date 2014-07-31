@@ -62,10 +62,10 @@ A local temp dir which is read and writeable. Defaults to `/tmp`.
 You can pass arguments directly to WPCLI using this var. By default it will try to load values from `ENV['WPCLI_ARGS']`.
 
 * `set :wpcli_local_uploads_dir`<br/>
-Local dir where WP stores the uploads. IMPORTANT: Add trailing slash!
+Local dir where WP stores the uploads. IMPORTANT: Add trailing slash! Optional if using [Bedrock Wordpress Stack](http://roots.io/wordpress-stack/)
 
 * `set :wpcli_remote_uploads_dir`<br/>
-Remote dir where WP stores the uploads. IMPORTANT: Add trailing slash!
+Remote dir where WP stores the uploads. IMPORTANT: Add trailing slash! Optional if using [Bedrock Wordpress Stack](http://roots.io/wordpress-stack/)
 
 ## Contributing
 

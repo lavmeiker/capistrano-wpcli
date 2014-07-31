@@ -7,11 +7,11 @@ namespace :load do
 
     # Local dir where WP stores the uploads
     # IMPORTANT: Add trailing slash!
-    set :wpcli_local_uploads_dir, "wp-content/uploads/"
+    set :wpcli_local_uploads_dir, "web/app/uploads/"
 
     # Remote dir where WP stores the uploads
     # IMPORTANT: Add trailing slash!
-    set :wpcli_remote_uploads_dir, "wp-content/uploads/"
+    set :wpcli_remote_uploads_dir, -> {"#{shared_path.to_s}/web/app/uploads/"}
   end
 end
 
