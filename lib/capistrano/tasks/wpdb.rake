@@ -12,8 +12,8 @@ namespace :load do
     set :local_tmp_dir, "/tmp"
 
     # Temporal db dumps path
-    set :wpcli_remote_db_file, "#{fetch(:tmp_dir)}/wpcli_database.sql.gz"
-    set :wpcli_local_db_file, "#{fetch(:local_tmp_dir)}/wpcli_database.sql.gz"
+    set :wpcli_remote_db_file, -> {"#{fetch(:tmp_dir)}/wpcli_database.sql.gz"}
+    set :wpcli_local_db_file, -> {"#{fetch(:local_tmp_dir)}/wpcli_database.sql.gz"}
   end
 end
 
@@ -27,7 +27,17 @@ namespace :wpcli do
           download! fetch(:wpcli_remote_db_file), fetch(:wpcli_local_db_file)
           execute :rm, fetch(:wpcli_remote_db_file)
         end
+      end
 
+      unless roles(:dev).empty?
+        on roles(:dev) do
+          within fetch(:dev_path) do
+            execute :gunzip, "<", fetch(:wpcli_local_db_file), "|", :wp, :db, :import, "-"
+            execute :rm, fetch(:wpcli_local_db_file)
+            execute :wp, "search-replace", fetch(:wpcli_remote_url), fetch(:wpcli_local_url), fetch(:wpcli_args) || "--skip-columns=guid"
+          end
+        end
+      else
         run_locally do
           execute :gunzip, "<", fetch(:wpcli_local_db_file), "|", :wp, :db, :import, "-"
           execute :rm, fetch(:wpcli_local_db_file)
@@ -38,21 +48,34 @@ namespace :wpcli do
 
     desc "Push the local database"
     task :push do
-      on roles(:web) do
+      unless roles(:dev).empty?
+        on roles(:dev) do
+          within fetch(:dev_path) do
+            execute :wp, :db, :export, "- |", :gzip, ">", fetch(:wpcli_local_db_file)
+          end
+        end
+      else
         run_locally do
           execute :wp, :db, :export, "- |", :gzip, ">", fetch(:wpcli_local_db_file)
         end
-
+      end
+      on roles(:web) do
         upload! fetch(:wpcli_local_db_file), fetch(:wpcli_remote_db_file)
-
-        run_locally do
-          execute :rm, fetch(:wpcli_local_db_file)
-        end
-
         within release_path do
           execute :gunzip, "<", fetch(:wpcli_remote_db_file), "|", :wp, :db, :import, "-"
           execute :rm, fetch(:wpcli_remote_db_file)
           execute :wp, "search-replace", fetch(:wpcli_local_url), fetch(:wpcli_remote_url), fetch(:wpcli_args) || "--skip-columns=guid"
+        end
+      end
+      unless roles(:dev).empty?
+        on roles(:dev) do
+          within fetch(:dev_path) do
+            execute :rm, fetch(:wpcli_local_db_file)
+          end
+        end
+      else
+        run_locally do
+          execute :rm, fetch(:wpcli_local_db_file)
         end
       end
     end
