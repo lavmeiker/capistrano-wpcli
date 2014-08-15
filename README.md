@@ -67,6 +67,14 @@ Local dir where WP stores the uploads. IMPORTANT: Add trailing slash! Optional i
 * `set :wpcli_remote_uploads_dir`<br/>
 Remote dir where WP stores the uploads. IMPORTANT: Add trailing slash! Optional if using [Bedrock Wordpress Stack](http://roots.io/wordpress-stack/)
 
+### Vagrant
+
+If you are using another machine as a development server (Vagrant for example), you should define a `dev` role and indicate the path were the project lives on that server. This normally goes on `deploy.rb` file. Here's an example:
+
+`server "example.dev", user: 'vagrant', password: 'vagrant', roles: %w{dev}`
+
+`set :dev_path, '/srv/www/example.dev/current'`
+
 ## Contributing
 
 1. Fork it ( https://github.com/lavmeiker/capistrano-wpcli/fork )
