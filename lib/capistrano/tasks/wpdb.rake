@@ -32,10 +32,14 @@ namespace :wpcli do
       unless roles(:dev).empty?
         on roles(:dev) do
           within fetch(:dev_path) do
+            upload! fetch(:wpcli_local_db_file), fetch(:wpcli_local_db_file)
             execute :gunzip, "<", fetch(:wpcli_local_db_file), "|", :wp, :db, :import, "-"
             execute :rm, fetch(:wpcli_local_db_file)
             execute :wp, "search-replace", fetch(:wpcli_remote_url), fetch(:wpcli_local_url), fetch(:wpcli_args) || "--skip-columns=guid"
           end
+        end
+        run_locally do
+          execute :rm, fetch(:wpcli_local_db_file)
         end
       else
         run_locally do
@@ -52,6 +56,7 @@ namespace :wpcli do
         on roles(:dev) do
           within fetch(:dev_path) do
             execute :wp, :db, :export, "- |", :gzip, ">", fetch(:wpcli_local_db_file)
+            download! fetch(:wpcli_local_db_file), fetch(:wpcli_local_db_file)
           end
         end
       else
@@ -73,10 +78,9 @@ namespace :wpcli do
             execute :rm, fetch(:wpcli_local_db_file)
           end
         end
-      else
-        run_locally do
-          execute :rm, fetch(:wpcli_local_db_file)
-        end
+      end
+      run_locally do
+        execute :rm, fetch(:wpcli_local_db_file)
       end
     end
   end
