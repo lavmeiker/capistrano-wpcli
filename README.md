@@ -30,6 +30,7 @@ The following tasks are added to Capistrano:
 
 * `wpcli:run`<br/>
 Executes the WP-CLI command passed as parameter.
+Example: `cap production wpcli:run["core language install fr_FR"]`
 * `wpcli:db:push`<br/>
 Pushes the local WP database to the remote server and replaces the urls.
 * `wpcli:db:pull`<br/>
