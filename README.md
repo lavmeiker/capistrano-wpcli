@@ -70,7 +70,7 @@ Remote dir where WP stores the uploads. IMPORTANT: Add trailing slash! Optional 
 
 ### Vagrant
 
-If you are using another machine as a development server (Vagrant for example), you should define a `dev` role and indicate the path were the project lives on that server. This normally goes on `deploy.rb` file. Here's an example:
+If you are using another machine as a development server (Vagrant for example), you should define a `dev` role and indicate the path where the project lives on that server. This normally goes on `deploy.rb` file. Here's an example:
 
 `server "example.dev", user: 'vagrant', password: 'vagrant', roles: %w{dev}`
 
