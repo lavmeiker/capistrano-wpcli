@@ -79,5 +79,15 @@ namespace :wpcli do
         end
       end
     end
+
+    desc "Export the remote database"
+    task :export do
+      on roles(:web) do
+        within release_path do
+          execute :wp, :db, :export, "- |", :gzip, ">", fetch(:wpcli_remote_db_file)
+          download! fetch(:wpcli_remote_db_file), "."
+        end
+      end
+    end
   end
 end
