@@ -35,7 +35,7 @@ namespace :wpcli do
             upload! fetch(:wpcli_local_db_file), fetch(:wpcli_local_db_file)
             execute :gunzip, "<", fetch(:wpcli_local_db_file), "|", :wp, :db, :import, "-"
             execute :rm, fetch(:wpcli_local_db_file)
-            execute :wp, "search-replace", fetch(:wpcli_remote_url), fetch(:wpcli_local_url), fetch(:wpcli_args) || "--skip-columns=guid"
+            execute :wp, "search-replace", fetch(:wpcli_remote_url), fetch(:wpcli_local_url), fetch(:wpcli_args) || "--skip-columns=guid", "--url=" + fetch(:wpcli_remote_url)
           end
         end
         run_locally do
@@ -45,7 +45,7 @@ namespace :wpcli do
         run_locally do
           execute :gunzip, "<", fetch(:wpcli_local_db_file), "|", :wp, :db, :import, "-"
           execute :rm, fetch(:wpcli_local_db_file)
-          execute :wp, "search-replace", fetch(:wpcli_remote_url), fetch(:wpcli_local_url), fetch(:wpcli_args) || "--skip-columns=guid"
+          execute :wp, "search-replace", fetch(:wpcli_remote_url), fetch(:wpcli_local_url), fetch(:wpcli_args) || "--skip-columns=guid", "--url=" + fetch(:wpcli_remote_url)
         end
       end
     end
@@ -69,7 +69,7 @@ namespace :wpcli do
         within release_path do
           execute :gunzip, "<", fetch(:wpcli_remote_db_file), "|", :wp, :db, :import, "-"
           execute :rm, fetch(:wpcli_remote_db_file)
-          execute :wp, "search-replace", fetch(:wpcli_local_url), fetch(:wpcli_remote_url), fetch(:wpcli_args) || "--skip-columns=guid"
+          execute :wp, "search-replace", fetch(:wpcli_local_url), fetch(:wpcli_remote_url), fetch(:wpcli_args) || "--skip-columns=guid", "--url=" + fetch(:wpcli_local_url)
         end
       end
       unless roles(:dev).empty?
