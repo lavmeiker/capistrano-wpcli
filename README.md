@@ -32,9 +32,14 @@ The following tasks are added to Capistrano:
 Executes the WP-CLI command passed as parameter.
 Example: `cap production wpcli:run["core language install fr_FR"]`
 * `wpcli:db:push`<br/>
-Pushes the local WP database to the remote server and replaces the urls.
+Pushes the local WP database to the remote server and replaces the urls.<br/>
+Use `backup_dir="/some/path"` argument to backup the remote database before push.<br/>
+Example: `cap production wpcli:db:push backup_dir="."`
 * `wpcli:db:pull`<br/>
 Pulls the remote server WP database to local and replaces the urls.
+* `wpcli:db:export`<br/>
+Pulls the remote server WP database locally, uses `local_backup_directory` to define the location of the export.<br/>
+Override export location with `backup="/some/path"` argument.
 * `wpcli:rewrite:flush`<br/>
 Flush rewrite rules.
 * `wpcli:rewrite:hard_flush`<br/>
@@ -58,6 +63,9 @@ Url of the Wordpress root installation on the local server (used by search-repla
 
 * `set :local_tmp_dir`<br/>
 A local temp dir which is read and writeable. Defaults to `/tmp`.
+
+* `set :local_backup_dir`<br/>
+A local dir which is read and writeable. Defaults to `backup`.
 
 * `set :wpcli_args`<br/>
 You can pass arguments directly to WPCLI using this var. By default it will try to load values from `ENV['WPCLI_ARGS']`.

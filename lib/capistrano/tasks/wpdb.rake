@@ -11,6 +11,9 @@ namespace :load do
     # A local temp dir which is read and writeable
     set :local_tmp_dir, "/tmp"
 
+    # A local backup dir which is read and writeable
+    set :local_backup_dir, "backup"
+
     # Temporal db dumps path
     set :wpcli_remote_db_file, -> {"#{fetch(:tmp_dir)}/wpcli_database.sql.gz"}
     set :wpcli_local_db_file, -> {"#{fetch(:local_tmp_dir)}/wpcli_database.sql.gz"}
@@ -83,5 +86,18 @@ namespace :wpcli do
         execute :rm, fetch(:wpcli_local_db_file)
       end
     end
+
+    desc "Export the remote database"
+    task :export do
+      on roles(:web) do
+        within release_path do
+          backup_dir = ENV["backup_dir"] || fetch(:local_backup_dir)
+          execute :wp, :db, :export, "- |", :gzip, ">", fetch(:wpcli_remote_db_file)
+          download! fetch(:wpcli_remote_db_file), backup_dir
+        end
+      end
+    end
+
+    before :push, :export if ENV["backup_dir"]
   end
 end
