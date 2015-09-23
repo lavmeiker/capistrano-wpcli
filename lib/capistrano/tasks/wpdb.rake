@@ -1,5 +1,6 @@
 namespace :load do
   task :defaults do
+
     # The url under which the wordpress installation is
     # available on the remote server
     set :wpcli_remote_url, "http://example.com"
@@ -11,12 +12,18 @@ namespace :load do
     # A local temp dir which is read and writeable
     set :local_tmp_dir, "/tmp"
 
-    # A local backup dir which is read and writeable
-    set :local_backup_dir, "backup"
+    set :wpcli_backup_db, false
+
+    set :wpcli_local_db_backup_dir, -> {"web/app/db_backup/"}
+
+    # Remote and local backup files
+    set :wpcli_remote_db_backup_file, -> {"#{fetch(:tmp_dir)}/db_remote_#{Time.now}.sql.gz"}
+    set :wpcli_local_db_backup_file, -> {"#{fetch(:wpcli_local_db_backup_dir}/db_local_#{Time.now}.sql.gz"}
 
     # Temporal db dumps path
     set :wpcli_remote_db_file, -> {"#{fetch(:tmp_dir)}/wpcli_database.sql.gz"}
     set :wpcli_local_db_file, -> {"#{fetch(:local_tmp_dir)}/wpcli_database.sql.gz"}
+
   end
 end
 
@@ -36,7 +43,6 @@ namespace :wpcli do
         on roles(:dev) do
           within fetch(:dev_path) do
             local_tmp_file = fetch(:wpcli_local_db_file).gsub(/\.gz$/, "")
-
             upload! fetch(:wpcli_local_db_file), fetch(:wpcli_local_db_file)
             execute :gunzip, "-c", fetch(:wpcli_local_db_file), ">", local_tmp_file
             execute :wp, :db, :import, local_tmp_file
@@ -50,7 +56,6 @@ namespace :wpcli do
       else
         run_locally do
           local_tmp_file = fetch(:wpcli_local_db_file).gsub(/\.gz$/, "")
-
           execute :gunzip, "-c", fetch(:wpcli_local_db_file), ">", local_tmp_file
           execute :wp, :db, :import, local_tmp_file
           execute :rm, fetch(:wpcli_local_db_file), local_tmp_file
@@ -96,17 +101,25 @@ namespace :wpcli do
       end
     end
 
-    desc "Export the remote database"
-    task :export do
+    desc "Backup the remote database"
+    task :backup do
       on roles(:web) do
         within release_path do
-          backup_dir = ENV["backup_dir"] || fetch(:local_backup_dir)
-          execute :wp, :db, :export, "- |", :gzip, ">", fetch(:wpcli_remote_db_file)
-          download! fetch(:wpcli_remote_db_file), backup_dir
+          execute :wp, :db, :export, "- |", :gzip, ">", fetch(:wpcli_remote_db_backup_file)
+          download! fetch(:wpcli_remote_db_backup_file), fetch(:wpcli_local_db_backup_dir)
+          execute :rm, fetch(:wpcli_remote_db_backup_file)
         end
       end
     end
 
-    before :push, :export if ENV["backup_dir"]
+    desc "Backup the local database"
+    task :backup_local do
+      run_locally
+        execute :wp, :db, :export, "- |", :gzip, ">", fetch(:wpcli_local_db_backup_file)
+      end
+    end
+
+    before :push, :backup if :wpcli_backup_db
+
   end
 end

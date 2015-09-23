@@ -33,13 +33,14 @@ Executes the WP-CLI command passed as parameter.
 Example: `cap production wpcli:run["core language install fr_FR"]`
 * `wpcli:db:push`<br/>
 Pushes the local WP database to the remote server and replaces the urls.<br/>
-Use `backup_dir="/some/path"` argument to backup the remote database before push.<br/>
-Example: `cap production wpcli:db:push backup_dir="."`
+Optionally backs up the remote database before pushing (if `wpcli_backup_db` is set to true).
+Example: `cap production wpcli:db:push`
 * `wpcli:db:pull`<br/>
 Pulls the remote server WP database to local and replaces the urls.
-* `wpcli:db:export`<br/>
-Pulls the remote server WP database locally, uses `local_backup_directory` to define the location of the export.<br/>
-Override export location with `backup="/some/path"` argument.
+* `wpcli:db:backup`<br/>
+Pulls the remote server WP database to local, uses `wpcli_local_db_backup_dir` to define the location of the export.<br/>
+* `wpcli:db:backup_local`<br/>
+Backs up the local WP database, uses `wpcli_local_db_backup_dir` to define the location of the export.<br/>
 * `wpcli:rewrite:flush`<br/>
 Flush rewrite rules.
 * `wpcli:rewrite:hard_flush`<br/>
@@ -64,17 +65,25 @@ Url of the Wordpress root installation on the local server (used by search-repla
 * `set :local_tmp_dir`<br/>
 A local temp dir which is read and writeable. Defaults to `/tmp`.
 
-* `set :local_backup_dir`<br/>
-A local dir which is read and writeable. Defaults to `backup`.
+* `set :wpcli_backup_db`<br/>
+Set to true if you would like to create backups of databases on each push. Defaults to false.
+
+* `set :wpcli_local_db_backup_dir`<br/>
+A local dir for storing database backups which is read and writeable. Defaults to `backup`.
+IMPORTANT: Make sure to add the folder to .gitignore to prevent db backups from being in version control.
 
 * `set :wpcli_args`<br/>
 You can pass arguments directly to WPCLI using this var. By default it will try to load values from `ENV['WPCLI_ARGS']`.
 
 * `set :wpcli_local_uploads_dir`<br/>
-Local dir where WP stores the uploads. IMPORTANT: Add trailing slash! Optional if using [Bedrock Wordpress Stack](http://roots.io/wordpress-stack/)
+Local dir where WP stores the uploads.
+IMPORTANT: Add trailing slash!
+Optional if using [Bedrock Wordpress Stack](http://roots.io/wordpress-stack/)
 
 * `set :wpcli_remote_uploads_dir`<br/>
-Remote dir where WP stores the uploads. IMPORTANT: Add trailing slash! Optional if using [Bedrock Wordpress Stack](http://roots.io/wordpress-stack/)
+Remote dir where WP stores the uploads.
+IMPORTANT: Add trailing slash!
+Optional if using [Bedrock Wordpress Stack](http://roots.io/wordpress-stack/)
 
 ### Vagrant
 
