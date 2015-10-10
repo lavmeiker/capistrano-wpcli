@@ -77,11 +77,14 @@ You can pass arguments directly to WPCLI using this var. By default it will try 
 
 * `set :wpcli_local_uploads_dir`<br/>
 Absolute or relative path to local WP uploads directory. Defaults to 'web/app/uploads/'.<br/>
-IMPORTANT: Add trailing slash!<br/>
+IMPORTANT: Add trailing slash!
 
 * `set :wpcli_remote_uploads_dir`<br/>
 Absolute path to remote wordpress uploads directory. Defaults to "#{shared_path.to_s}/web/app/uploads/".<br/>
-IMPORTANT: Add trailing slash!<br/>
+IMPORTANT: Add trailing slash!
+
+* `set :wpcli_remote_uploads_dir`<br/>
+If you for whatever reason need to set a different port for rsync you can do so by setting this var. Defaults to undefined.<br/>
 
 ### Vagrant
 
