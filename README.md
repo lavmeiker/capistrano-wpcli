@@ -83,7 +83,7 @@ IMPORTANT: Add trailing slash!
 Absolute path to remote wordpress uploads directory. Defaults to "#{shared_path.to_s}/web/app/uploads/".<br/>
 IMPORTANT: Add trailing slash!
 
-* `set :wpcli_remote_uploads_dir`<br/>
+* `set :wpcli_rsync_port`<br/>
 If you for whatever reason need to set a different port for rsync you can do so by setting this var. Defaults to undefined.<br/>
 
 ### Vagrant
