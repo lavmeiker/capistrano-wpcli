@@ -6,7 +6,7 @@ require 'capistrano/wpcli/version'
 Gem::Specification.new do |spec|
   spec.name          = "capistrano-wpcli"
   spec.version       = Capistrano::Wpcli::VERSION
-  spec.authors       = ["Juancito Arias"]
+  spec.authors       = ["Juancito Arias", "Jeremy Zahner"]
   spec.email         = ["trasgofurioso@gmail.com"]
   spec.summary       = %q{Simple Capistrano wrapper around WP-CLI}
   spec.description   = %q{Capistrano tasks for managing Wordpress}

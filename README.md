@@ -29,12 +29,18 @@ All you need to do is put the following in `Capfile` file:
 The following tasks are added to Capistrano:
 
 * `wpcli:run`<br/>
-Executes the WP-CLI command passed as parameter.
+Executes the WP-CLI command passed as parameter.<br/>
 Example: `cap production wpcli:run["core language install fr_FR"]`
 * `wpcli:db:push`<br/>
-Pushes the local WP database to the remote server and replaces the urls.
+Pushes the local WP database to the remote server and replaces the urls.<br/>
+Optionally backs up the remote database before pushing (if `wpcli_backup_db` is set to true, see Configuration).<br/>
+Example: `cap production wpcli:db:push`
 * `wpcli:db:pull`<br/>
 Pulls the remote server WP database to local and replaces the urls.
+* `wpcli:db:backup:remote`<br/>
+Pulls the remote server WP database to localhost, uses `wpcli_local_db_backup_dir` to define the location of the export.
+* `wpcli:db:backup:local`<br/>
+Backs up the local WP database, uses `wpcli_local_db_backup_dir` to define the location of the export.
 * `wpcli:rewrite:flush`<br/>
 Flush rewrite rules.
 * `wpcli:rewrite:hard_flush`<br/>
@@ -51,22 +57,34 @@ This plugin needs some configuration to work properly. You can put all your conf
 Here's the list of options and the defaults for each option:
 
 * `set :wpcli_remote_url`<br/>
-Url of the Wordpress root installation on the remote server (used by search-replace command).
+Url of the WP root installation on the remote server (used by search-replace command).
 
 * `set :wpcli_local_url`<br/>
-Url of the Wordpress root installation on the local server (used by search-replace command).
+Url of the WP root installation on the local server (used by search-replace command).
 
 * `set :local_tmp_dir`<br/>
-A local temp dir which is read and writeable. Defaults to `/tmp`.
+Absolute path to local directory temporary directory which is read and writeable. Defaults to `/tmp`.
+
+* `set :wpcli_backup_db`<br/>
+Set to true if you would like to create backups of databases on each push. Defaults to false.
+
+* `set :wpcli_local_db_backup_dir`<br/>
+Absolute or relative path to local directory for storing database backups which is read and writeable. Defaults to `config/backup`.<br/>
+IMPORTANT: Make sure to add the folder to .gitignore to prevent db backups from being in version control.
 
 * `set :wpcli_args`<br/>
 You can pass arguments directly to WPCLI using this var. By default it will try to load values from `ENV['WPCLI_ARGS']`.
 
 * `set :wpcli_local_uploads_dir`<br/>
-Local dir where WP stores the uploads. IMPORTANT: Add trailing slash! Optional if using [Bedrock Wordpress Stack](http://roots.io/wordpress-stack/)
+Absolute or relative path to local WP uploads directory. Defaults to 'web/app/uploads/'.<br/>
+IMPORTANT: Add trailing slash!
 
 * `set :wpcli_remote_uploads_dir`<br/>
-Remote dir where WP stores the uploads. IMPORTANT: Add trailing slash! Optional if using [Bedrock Wordpress Stack](http://roots.io/wordpress-stack/)
+Absolute path to remote wordpress uploads directory. Defaults to "#{shared_path.to_s}/web/app/uploads/".<br/>
+IMPORTANT: Add trailing slash!
+
+* `set :wpcli_rsync_port`<br/>
+If you for whatever reason need to set a different port for rsync you can do so by setting this var. Defaults to undefined.<br/>
 
 ### Vagrant
 
