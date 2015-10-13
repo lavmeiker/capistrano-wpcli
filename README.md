@@ -1,5 +1,7 @@
 # Capistrano::WPCLI
 
+[![Dependency Status](https://www.versioneye.com/user/projects/561c9bfda193340f2f001728/badge.svg?style=flat)](https://www.versioneye.com/user/projects/561c9bfda193340f2f001728)
+
 **Note: this plugin works only with Capistrano 3.**
 
 Provides command line tools to facilitate Wordpress deploy.
