@@ -1,6 +1,7 @@
 # Capistrano::WPCLI
 
 [![Dependency Status](https://www.versioneye.com/user/projects/561c9bfda193340f2f001728/badge.svg?style=flat)](https://www.versioneye.com/user/projects/561c9bfda193340f2f001728)
+[![Gem Version](https://badge.fury.io/rb/capistrano-wpcli.svg)](https://badge.fury.io/rb/capistrano-wpcli)
 
 **Note: this plugin works only with Capistrano 3.**
 
