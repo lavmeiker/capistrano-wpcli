@@ -124,7 +124,7 @@ namespace :wpcli do
         on roles(:web) do
           within release_path do
             execute :wp, :db, :export, "- |", :gzip, ">", fetch(:wpcli_remote_db_file)
-            download! fetch(:wpcli_remote_db_file), Pathname.new(fetch(:wpcli_local_db_backup_dir)).join(fetch(:wpcli_local_db_backup_filename))
+            download! fetch(:wpcli_remote_db_file), File.join(fetch(:wpcli_local_db_backup_dir), fetch(:wpcli_local_db_backup_filename))
             execute :rm, fetch(:wpcli_remote_db_file)
           end
         end
@@ -134,7 +134,7 @@ namespace :wpcli do
       task :local do
         run_locally do
           set :stage, :local
-          execute :wp, :db, :export, "- |", :gzip, ">", Pathname.new(fetch(:wpcli_local_db_backup_dir)).join(fetch(:wpcli_local_db_backup_filename))
+          execute :wp, :db, :export, "- |", :gzip, ">", File.join(fetch(:wpcli_local_db_backup_dir), fetch(:wpcli_local_db_backup_filename))
         end
       end
 
