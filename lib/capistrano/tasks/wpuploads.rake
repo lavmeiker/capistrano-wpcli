@@ -37,6 +37,9 @@ namespace :wpcli do
       task :pull do
         roles(:web).each do |role|
           run_locally do
+            puts role.netssh_options[:port]
+            port = role.netssh_options[:port] || 22
+            set :wpcli_rsync_options, fetch(:wpcli_rsync_options) + (" -e 'ssh -p #{port}'")
             execute :rsync, fetch(:wpcli_rsync_options), "#{role.user}@#{role.hostname}:#{fetch(:wpcli_remote_uploads_dir)}", fetch(:wpcli_local_uploads_dir)
           end
         end
