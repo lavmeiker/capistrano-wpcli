@@ -21,7 +21,7 @@ GEM
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (3.2.0)
-    rake (11.3.0)
+    rake (13.0.1)
     sshkit (1.11.5)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
@@ -32,7 +32,7 @@ PLATFORMS
 DEPENDENCIES
   bundler (~> 1.12)
   capistrano-wpcli!
-  rake (~> 11.2)
+  rake (~> 13.0)
 
 BUNDLED WITH
    1.13.6
